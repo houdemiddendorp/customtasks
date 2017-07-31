@@ -1,0 +1,128 @@
+{
+  "id": "C1333899-FB26-487A-8C7D-E7A07140C2A6",
+  "name": "CopyFromAzureBlobContainer",
+  "friendlyName": "Copy from Azure Blob Storage Container",
+  "description": "Copy files from an Azure Blob Storage Container",
+  "author": "H. Oude Middendorp",
+  "helpMarkDown": "Copy files from an Azure Blob Storage Container",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "3"
+  },
+  "minimumAgentVersion": "1.95.0",
+  "instanceNameFormat": "CopyFromAzureBlobContainer $(message)",
+  "inputs": [
+    {
+      "name": "ConnectedServiceNameSelector",
+      "type": "pickList",
+      "label": "Azure Connection Type",
+      "required": false,
+      "helpMarkDown": "",
+      "defaultValue": "ConnectedServiceName",
+      "options": {
+        "ConnectedServiceName": "Azure Classic",
+        "ConnectedServiceNameARM": "Azure Resource Manager",
+        "Anonymous": "Anonymous"
+      }
+    },
+    {
+      "name": "ConnectedServiceName",
+      "type": "connectedService:Azure",
+      "label": "Azure Classic Subscription",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Azure Classic subscription to target for downloading the files.",
+      "visibleRule": "ConnectedServiceNameSelector = ConnectedServiceName"
+    },
+    {
+      "name": "ConnectedServiceNameARM",
+      "type": "connectedService:AzureRM",
+      "label": "Azure Subscription",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Azure Resource Manager subscription to target for downloading the files.",
+      "visibleRule": "ConnectedServiceNameSelector = ConnectedServiceNameARM"
+    },
+    {
+      "name": "StorageAccount",
+      "type": "pickList",
+      "label": "Classic Storage Account",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Specify a pre-existing classic storage account.",
+      "properties": {
+        "EditableOptions": "True"
+      },
+      "visibleRule": "ConnectedServiceNameSelector = ConnectedServiceName"
+    },
+    {
+      "name": "StorageAccountRM",
+      "type": "pickList",
+      "label": "RM Storage Account",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Specify a pre-existing ARM storage account.",
+      "properties": {
+        "EditableOptions": "True"
+      },
+      "visibleRule": "ConnectedServiceNameSelector = ConnectedServiceNameARM"
+    },
+    {
+      "name": "StorageAccountName",
+      "type": "string",
+      "label": "Storage Account Name",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Name of storage account that contains the container for downloading.",
+      "visibleRule": "ConnectedServiceNameSelector = Anonymous"
+    },
+    {
+      "name": "ContainerName",
+      "type": "string",
+      "label": "Container Name",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Name of the Container for downloading."
+    },
+    {
+      "name": "FileName",
+      "type": "string",
+      "label": "File Name",
+      "defaultValue": "*",
+      "required": true,
+      "helpMarkDown": "Name of the blob to download (may include wildcards)."
+    },
+    {
+      "name": "DestinationFolder",
+      "type": "string",
+      "label": "Destination Folder",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Destination Folder"
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "StorageAccount",
+      "endpointId": "$(ConnectedServiceName)",
+      "dataSourceName": "AzureStorageServiceNames"
+    },
+    {
+      "target": "StorageAccountRM",
+      "endpointId": "$(ConnectedServiceNameARM)",
+      "dataSourceName": "AzureStorageAccountRM"
+    }
+  ],
+  "execution": {
+    "PowerShell3": {
+      "target": "CopyFromBlob.ps1"
+    }
+  }
+}
