@@ -1,0 +1,93 @@
+{
+  "id": "4E4596F6-4B15-4CC6-B596-667815CD9163",
+  "name": "CreateRelease",
+  "friendlyName": "Create Release",
+  "description": "Create Release",
+  "author": "H. Oude Middendorp",
+  "helpMarkDown": "Create a release. Works only for release definitions that have no linked artifacts!!!",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "0"
+  },
+  "minimumAgentVersion": "1.95.0",
+  "instanceNameFormat": "CreateRelease $(message)",
+  "inputs": [
+    {
+      "name": "ConnectionTypeSelector",
+      "type": "pickList",
+      "label": "TFS or VSTS Connection",
+      "required": true,
+      "helpMarkDown": "",
+      "defaultValue": "VSTSConnection",
+      "options": {
+        "TFSConnection": "Team Foundation Server",
+        "VSTSConnection": "Visual Studio Team Services"
+      }
+    },
+    {
+      "name": "vstsAccount",
+      "type": "string",
+      "label": "VSTS Account Name",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Visual Studio Team Services account name",
+      "visibleRule": "ConnectionTypeSelector = VSTSConnection"
+    },
+    {
+      "name": "TFSUri",
+      "type": "string",
+      "label": "TFS URI",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Uri to Team Foundation Server (incl. protocol, port and projectcollection)",
+      "visibleRule": "ConnectionTypeSelector = TFSConnection"
+    },
+    {
+      "name": "personalAccessToken",
+      "type": "string",
+      "label": "Personal Access Token",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Personal Access Token for authentication"
+    },
+    {
+      "name": "projectName",
+      "type": "string",
+      "label": "Project Name",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Name of the project that contains the release definition"
+    },
+    {
+      "name": "releaseDefinitionName",
+      "type": "string",
+      "label": "Release Definition",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Name of the release definition"
+    },
+    {
+      "name": "releaseDescription",
+      "type": "string",
+      "label": "Release Description",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Description of the release"
+    }
+
+  ],
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\CreateRelease.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

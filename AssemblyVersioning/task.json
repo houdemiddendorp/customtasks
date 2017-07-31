@@ -1,0 +1,54 @@
+{
+  "id": "fe157270-9f4f-11e6-b611-8f9d4db1874e",
+  "name": "AssemblyVersioning",
+  "friendlyName": "Versioning Assemblies",
+  "description": "This task gives all assemblies a comprehensive version number during build",
+  "author": "H. Oude Middendorp",
+  "helpMarkDown": "This task gives all assemblies a comprehensive version number during build",
+  "category": "Utility",
+  "visibility": [
+    "Build"
+  ],
+  "demands": [ ],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "8"
+  },
+  "minimumAgentVersion": "1.95.0",
+  "instanceNameFormat": "AssemblyVersioning $(message)",
+  "inputs": [
+    {
+      "name": "srcPath",
+      "type": "filePath",
+      "label": "Working Directory",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "The working directory when AssemblyVersioning is run."
+    },
+    {
+      "name": "assemblyVersion",
+      "type": "string",
+      "label": "Assembly Version",
+      "defaultValue": "1.0.0.0",
+      "required": true,
+      "helpMarkDown": "The assembly version that must be given to assemblies during versioning"
+    },
+    {
+      "name": "fileAssemblyVersion",
+      "type": "string",
+      "label": "File Version",
+      "defaultValue": "1.0.J.B",
+      "required": true,
+      "helpMarkDown": "The file version that must be given to assemblies during versioning. The letter 'J' is replaced by the build date in yyyymmdd format and the letter 'B' is replaced by the build increment number"
+    }
+
+  ],
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\AssemblyVersioning.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}
