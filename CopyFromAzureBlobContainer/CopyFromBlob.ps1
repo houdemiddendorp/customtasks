@@ -7,6 +7,7 @@ $StorageAccountRM = Get-VstsInput -Name StorageAccountRM
 $ContainerName = Get-VstsInput -Name ContainerName
 $FileName = Get-VstsInput -Name FileName
 $DestinationFolder = Get-VstsInput -Name DestinationFolder
+$ProxyUrl = Get-VstsInput -Name ProxyUrl
 
 Write-Host "ConnectedServiceNameSelector = $ConnectedServiceNameSelector"
 Write-Host "ConnectedServiceName = $ConnectedServiceName"
@@ -18,7 +19,9 @@ Write-Host "ContainerName = $ContainerName"
 Write-Host "FileName = $FileName"
 Write-Host "DestinationFolder = $DestinationFolder"
 
-
+# Work with enterprise proxy
+$proxyUri = new-object System.Uri($ProxyUrl)
+[System.Net.WebRequest]::DefaultWebProxy = new-object System.Net.WebProxy ($proxyUri, $true)
 
 if ($ConnectedServiceNameSelector -eq "Anonymous")
 {
@@ -64,5 +67,5 @@ if ($ConnectedServiceNameSelector -eq "ConnectedServiceNameARM")
 }
 
 Write-Host "Download files ..."
-$blobs = Get-AzureStorageBlob -Context $storageContext -Container $ContainerName -Blob $FileName | Get-AzureStorageBlobContent –Destination $DestinationFolder -Verbose
+Get-AzureStorageBlob -Context $storageContext -Container $ContainerName -Blob $FileName | Get-AzureStorageBlobContent –Destination $DestinationFolder -Verbose
 Write-Host "Ready"

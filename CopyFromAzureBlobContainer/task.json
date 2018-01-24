@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "3"
+    "Patch": "6"
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "CopyFromAzureBlobContainer $(message)",
@@ -106,6 +106,14 @@
       "defaultValue": "",
       "required": true,
       "helpMarkDown": "Destination Folder"
+    },
+    {
+      "name": "ProxyUrl",
+      "type": "string",
+      "label": "Proxy URL i.c.o. enterprise proxy",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Proxy URL i.c.o. enterprise proxy"
     }
   ],
   "dataSourceBindings": [
